@@ -1,6 +1,5 @@
 import internal.{_, given}
 import internal.cards.Card._
-import io.Operator
 
 import cats.effect._
 
@@ -10,5 +9,6 @@ object Main extends IOApp.Simple:
     val turns = turn[IO].selectSkills().selectCards(cards)
     for
       _ <- IO.println("example turn in FGO")
-      _ <- Operator.TestOperator.start(turns)
+      _ <- io.Operator.AdbOperator[IO](io.Driver.TestDriver, 1).start(turns)
+      _ <- io.Operator.TestOperator.start(turns)
     yield ()

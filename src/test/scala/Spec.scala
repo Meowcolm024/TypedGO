@@ -8,7 +8,7 @@ import cats.effect.IO
 import cats.implicits._
 import fs2.Stream
 
-class Spec extends munit.CatsEffectSuite {
+class Spec extends munit.CatsEffectSuite:
 
   def compile[N1, N2, N3, K1 <: Card[N1], K2 <: Card[N2], K3 <: Card[N3]](
       cards: Pool[K1 |>: K2 |>: K3 |>: TNil]
@@ -37,4 +37,3 @@ class Spec extends munit.CatsEffectSuite {
       e <- expected.build.compile.toList
     yield assertEquals(s, e)
   }
-}
