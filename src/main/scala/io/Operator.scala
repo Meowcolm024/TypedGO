@@ -25,7 +25,7 @@ object Operator:
 
   object TestOperator extends Operator[IO](TestDriver) {
     override def operate(op: Operation): IO[Unit] =
-      IO.println(op)
+      IO.println(s"select ${op.show}")
   }
 
 end Operator

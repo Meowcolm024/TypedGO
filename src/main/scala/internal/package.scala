@@ -1,5 +1,6 @@
 import internal.cards.{Pool, Inst, Card}
 import internal.cards.Card._
+import internal.turns.Turn.WithCard
 import internal.util.Helper._
 import io.Operation
 
@@ -8,14 +9,9 @@ import cats.effect.Sync
 
 package object internal:
 
-  def pool: Pool[TNil] = Pool.empty
+  def turn[F[_]: Sync]: WithCard[F] = WithCard(Stream.empty)
 
-  extension [N1, N2, N3, K1 <: Card[N1], K2 <: Card[N2], K3 <: Card[N3]](
-      p: Pool[K1 |>: K2 |>: K3 |>: TNil]
-  )(using ValueOf[N1], ValueOf[N2], ValueOf[N3])
-    def build[F[_]: Sync]: Stream[F, Operation] = p.i match
-      case k1 |>: k2 |>: k3 |>: _ =>
-        Stream(k1.asOp, k2.asOp, k3.asOp)
+  def card: Pool[TNil] = Pool.empty
 
   given Inst[ATK] with
     override def inst[N]: ATK[N] = ATK[N]()
