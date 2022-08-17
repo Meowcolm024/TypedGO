@@ -3,7 +3,7 @@ package internal.cards
 import internal.util.Helper._
 import io.Operation
 
-private[internal] case class Pool[A](i: A)
+case class Pool[A](i: A)
 
 object Pool:
   def empty: Pool[TNil] = Pool[TNil](TNil())

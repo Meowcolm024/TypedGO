@@ -15,7 +15,7 @@ object Turn:
 
     def selectCards[N1, N2, N3, K1 <: Card[N1], K2 <: Card[N2], K3 <: Card[N3]](
         cards: Pool[K1 |>: K2 |>: K3 |>: TNil]
-    )(using ValueOf[N1], ValueOf[N2], ValueOf[N3]) = cards.i match
+    )(using ValueOf[N1], ValueOf[N2], ValueOf[N3]): WithCard[F] = cards.i match
       case k1 |>: k2 |>: k3 |>: _ =>
         WithCard(ops ++ Stream(k1.asOp, k2.asOp, k3.asOp))
 

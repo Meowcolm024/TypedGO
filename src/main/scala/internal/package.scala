@@ -9,6 +9,10 @@ import cats.effect.Sync
 
 package object internal:
 
+  type Card[A] = internal.cards.Card[A]
+  type Turn = internal.turns.Turn
+  type Pool[A] = internal.cards.Pool[A]
+
   def turn[F[_]: Sync]: WithCard[F] = WithCard(Stream.empty)
 
   def card: Pool[TNil] = Pool.empty

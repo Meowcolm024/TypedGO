@@ -6,6 +6,7 @@ sealed trait Card[A]:
   def asOp(using ValueOf[A]): Operation
 
 object Card:
+
   case class ATK[A]() extends Card[A]:
     def asOp(using ValueOf[A]): Operation =
       Operation.CardOp(ATK[Nothing](), valueOf[A].asInstanceOf[Int])
