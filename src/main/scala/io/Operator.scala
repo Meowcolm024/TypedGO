@@ -16,11 +16,28 @@ trait Operator[F[_]: Sync](val driver: Driver[F]):
 
 object Operator:
 
-  class AdbOperator[F[_]: Sync] extends Operator[F](AdbDriver[F]) {
+  class AdbOperator[F[_]: Sync](val shift: Int = 0)
+      extends Operator[F](AdbDriver[F]) {
+    import internal.cards.Card._
+    import cats.effect.std.Random
+
+    private val atks =
+      List((190, 760), (560, 760), (960, 760), (1340, 760), (1740, 760))
+    private val nps = List((620, 320), (970, 320), (1310, 320))
+    private def shiftPoint(p: (Int, Int)): F[(Int, Int)] =
+      for
+        rnd <- Random.scalaUtilRandom[F]
+        x <- rnd.betweenInt(-shift, shift)
+        y <- rnd.betweenInt(-shift, shift)
+      yield (p._1 + x, p._2 + y)
+
     override def operate(op: Operation): F[Unit] =
       op match
-        case Operation.CardOp(_, _) => driver.tap(1, 1)
-        case Operation.SkillOp(_)   => Sync[F].unit
+        case Operation.CardOp(ATK(), i) =>
+          shiftPoint(atks(i)).flatMap(driver.tap.tupled)
+        case Operation.CardOp(NP(), i) =>
+          shiftPoint(nps(i)).flatMap(driver.tap.tupled)
+        case Operation.SkillOp(_) => Sync[F].unit
 
   }
 
