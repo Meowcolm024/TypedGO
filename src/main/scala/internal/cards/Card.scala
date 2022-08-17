@@ -8,10 +8,10 @@ sealed trait Card[A]:
 object Card:
   case class ATK[A]() extends Card[A]:
     def asOp(using ValueOf[A]): Operation =
-      Operation.CardOp(this, valueOf[A].asInstanceOf[Int])
+      Operation.CardOp(ATK[Nothing](), valueOf[A].asInstanceOf[Int])
 
   case class NP[A]() extends Card[A]:
     def asOp(using ValueOf[A]): Operation =
-      Operation.CardOp(this, valueOf[A].asInstanceOf[Int])
+      Operation.CardOp(NP[Nothing](), valueOf[A].asInstanceOf[Int])
       
 end Card

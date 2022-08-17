@@ -2,34 +2,30 @@ package internal.cards
 
 import Card._
 
-trait Valid[F[_], N] { private[cards] def inst: F[N] }
+trait Inst[F[_]] { def inst[N]: F[N] }
+
+trait Valid[F[_], N] {
+  private[cards] def inst(using i: Inst[F]): F[N] = i.inst
+}
 
 object Valid:
 
-  def inst[F[_], N](using v: Valid[F, N]) = v.inst
+  def inst[F[_], N](using v: Valid[F, N])(using Inst[F]) = v.inst
 
-  given bc1: Valid[ATK, 1] with
-    override def inst: ATK[1] = ATK[1]()
+  given bc1: Valid[ATK, 1] with {}
 
-  given bc2: Valid[ATK, 2] with
-    override def inst: ATK[2] = ATK[2]()
+  given bc2: Valid[ATK, 2] with {}
 
-  given bc3: Valid[ATK, 3] with
-    override def inst: ATK[3] = ATK[3]()
+  given bc3: Valid[ATK, 3] with {}
 
-  given bc4: Valid[ATK, 4] with
-    override def inst: ATK[4] = ATK[4]()
+  given bc4: Valid[ATK, 4] with {}
 
-  given bc5: Valid[ATK, 5] with
-    override def inst: ATK[5] = ATK[5]()
+  given bc5: Valid[ATK, 5] with {}
 
-  given bn1: Valid[NP, 1] with
-    override def inst: NP[1] = NP[1]()
+  given bn1: Valid[NP, 1] with {}
 
-  given bn2: Valid[NP, 2] with
-    override def inst: NP[2] = NP[2]()
+  given bn2: Valid[NP, 2] with {}
 
-  given bn3: Valid[NP, 3] with
-    override def inst: NP[3] = NP[3]()
+  given bn3: Valid[NP, 3] with {}
 
 end Valid
