@@ -2,6 +2,7 @@ package io
 
 import io.Operation
 import io.Driver._
+import internal.turns.Turn.WithCard
 
 import cats.effect.{IO, Sync}
 import cats.implicits._
@@ -10,8 +11,8 @@ import fs2.Stream
 trait Operator[F[_]: Sync](val driver: Driver[F]):
   def operate(op: Operation): F[Unit]
 
-  final def start(ops: Stream[F, Operation]): F[Unit] =
-    ops.evalTap(operate).compile.drain
+  final def start(turns: WithCard[F]): F[Unit] =
+    turns.build.evalTap(operate).compile.drain
 
 object Operator:
 
