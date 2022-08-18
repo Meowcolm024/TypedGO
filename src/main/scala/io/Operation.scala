@@ -1,5 +1,6 @@
 package io
 
+import internal.skills.SkillType
 import internal.cards.Card
 
 import cats.Show
@@ -7,11 +8,6 @@ import cats.Show
 enum Operation:
   case CardOp(card: Card[Nothing], idx: Int)
   case SkillOp(ty: SkillType)
-
-enum SkillType:
-  case Normal()
-  case Target[A]()
-  case OrderChange[A, B]()
 
 given Show[Operation] with
   def show(op: Operation): String = op match

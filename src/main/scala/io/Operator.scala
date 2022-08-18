@@ -4,11 +4,12 @@ import io.Operation
 import io.Driver._
 import internal.turns.Turn.WithCard
 
+import org.typelevel.log4cats.Logger
 import cats.effect.{IO, Sync}
 import cats.implicits._
 import fs2.Stream
 
-trait Operator[F[_]: Sync](val driver: Driver[F]):
+trait Operator[F[_]: Sync](val driver: Driver[F])(using Logger[F]):
   def operate(op: Operation): F[Unit]
 
   final def start(turns: WithCard[F]): F[Unit] =
@@ -19,7 +20,7 @@ object Operator:
   def AdbOperator[F[_]: Sync](
       adbDriver: Driver[F],
       shift: Int = 0
-  ): Operator[F] =
+  )(using Logger[F]): Operator[F] =
     new Operator[F](adbDriver) {
       import internal.cards.Card._
       import cats.effect.std.Random
@@ -45,10 +46,10 @@ object Operator:
           case Operation.SkillOp(_) => Sync[F].unit
     }
 
-  val TestOperator: Operator[IO] =
-    new Operator[IO](null) {
-      override def operate(op: Operation): IO[Unit] =
-        IO.println(s"select ${op.show}")
+  def TestOperator[F[_]: Sync](using Logger[F]): Operator[F] =
+    new Operator[F](null) {
+      override def operate(op: Operation): F[Unit] =
+        Logger[F].info(s"select ${op.show}")
     }
 
 end Operator

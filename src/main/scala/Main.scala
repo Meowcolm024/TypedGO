@@ -1,5 +1,6 @@
 import internal.{_, given}
 import internal.cards.Card._
+import io.Logging._
 
 import cats.effect._
 
@@ -10,5 +11,5 @@ object Main extends IOApp.Simple:
     for
       _ <- IO.println("example turn in FGO")
       _ <- io.Operator.AdbOperator[IO](io.Driver.TestDriver, 1).start(turns)
-      _ <- io.Operator.TestOperator.start(turns)
+      _ <- io.Operator.TestOperator[IO].start(turns)
     yield ()
