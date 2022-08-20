@@ -1,11 +1,11 @@
 package internal.skills
 
-import internal.util.Helper._
-
-trait Servant[A]
-
-trait Skill[S <: Servant[_], N, Cd <: Nat]
+import Valid._
 
 object Skill:
+
+  def skill[P <: Performer, N](ty: SkillType)(using ValidServant[P])(using
+      ValidSkill[N]
+  ) = ???
 
 end Skill

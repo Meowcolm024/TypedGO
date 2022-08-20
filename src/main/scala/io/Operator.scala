@@ -23,6 +23,7 @@ object Operator:
   )(using Logger[F]): Operator[F] =
     new Operator[F](adbDriver) {
       import internal.cards.Card._
+      import internal.skills.Performer._
       import cats.effect.std.Random
 
       private val atks =
@@ -43,7 +44,8 @@ object Operator:
             shiftPoint(atks(i - 1)).flatMap(driver.tap.tupled)
           case Operation.CardOp(NP(), i) =>
             shiftPoint(nps(i - 1)).flatMap(driver.tap.tupled)
-          case Operation.SkillOp(_) => Sync[F].unit
+          case Operation.SkillOp(s @ Servant(ty), idx) => Sync[F].unit
+          case Operation.SkillOp(Master(ty), idx)      => Sync[F].unit
     }
 
   def TestOperator[F[_]: Sync](using Logger[F]): Operator[F] =

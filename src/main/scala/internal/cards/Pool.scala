@@ -9,21 +9,21 @@ object Pool:
   def empty: Pool[TNil] = Pool[TNil](TNil())
 
   extension (p: Pool[TNil])
-    def select[F[_], N](using Valid[F, N])(using Inst[F]): Pool[F[N] |>: TNil] =
-      Pool(|>:(Valid.inst, TNil()))
+    def select[F[_], N](using ValidCard[F, N])(using Inst[F]): Pool[F[N] |>: TNil] =
+      Pool(|>:(ValidCard.inst, TNil()))
 
-  extension [X[_], A](p: Pool[X[A] |>: TNil])(using Valid[X, A])
-    def select[F[_], N](using Valid[F, N])(using Inst[F])(using
+  extension [X[_], A](p: Pool[X[A] |>: TNil])(using ValidCard[X, A])
+    def select[F[_], N](using ValidCard[F, N])(using Inst[F])(using
         X[A] =!= F[N]
-    ): Pool[X[A] |>: F[N] |>: TNil] = Pool(|>:(p.i.h, |>:(Valid.inst, TNil())))
+    ): Pool[X[A] |>: F[N] |>: TNil] = Pool(|>:(p.i.h, |>:(ValidCard.inst, TNil())))
 
   extension [X[_], A, Y[_], B](
       p: Pool[X[A] |>: Y[B] |>: TNil]
-  )(using Valid[X, A], Valid[Y, B])
-    def select[F[_], N](using Valid[F, N])(using Inst[F])(using
+  )(using ValidCard[X, A], ValidCard[Y, B])
+    def select[F[_], N](using ValidCard[F, N])(using Inst[F])(using
         X[A] =!= Y[B],
         X[A] =!= F[N],
         Y[B] =!= F[N]
     ): Pool[X[A] |>: Y[B] |>: F[N] |>: TNil] = Pool(
-      |>:(p.i.h, |>:(p.i.t.h, |>:(Valid.inst, TNil())))
+      |>:(p.i.h, |>:(p.i.t.h, |>:(ValidCard.inst, TNil())))
     )

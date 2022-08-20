@@ -15,7 +15,7 @@ object Turn:
       WithCard(turn.ops ++ cards.get)
 
   extension [F[_]: Sync](turn: WithCard[F])
-    def unsafeSelectSkills(): WithSkill[F] =
-      WithSkill(turn.ops)
+    def unsafeSelectSkills(skills: Unsafe[Stream[F, Operation]]): WithSkill[F] =
+      WithSkill(turn.ops ++ skills.get)
 
 end Turn

@@ -1,6 +1,6 @@
 import internal.{_, given}
 import internal.cards.Card._
-import io.Logging._
+import io.Logging.default
 
 import cats.effect._
 
