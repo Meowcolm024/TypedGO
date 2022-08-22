@@ -20,6 +20,7 @@ object Driver:
           Sync[F].raiseError(_)
         )
         .map(s => Logger[F].info(s))
+        >> Sync[F].delay(Thread.sleep(500.millis.toMillis))
     override def swipe(x: (Int, Int), y: (Int, Int), t: Duration): F[Unit] =
       Sync[F]
         .handleErrorWith(
@@ -28,6 +29,7 @@ object Driver:
           )
         )(Sync[F].raiseError(_))
         .map(s => Logger[F].info(s))
+        >> Sync[F].delay(Thread.sleep(500.millis.toMillis))
 
   }
 

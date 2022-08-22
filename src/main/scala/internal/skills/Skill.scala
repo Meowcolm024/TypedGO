@@ -1,11 +1,17 @@
 package internal.skills
 
+import internal.SkillType
 import Valid._
 
-object Skill:
+import io.Operation
 
-  def skill[P <: Performer, N](ty: SkillType)(using ValidServant[P])(using
-      ValidSkill[N]
-  ) = ???
+case class Skill(ops: LazyList[Operation.SkillOp]) {
 
-end Skill
+  def select[P <: Performer, N, T <: SkillType](using
+      pf: ValidServant[P],
+      sk: ValidSkill[N],
+      st: ValidSkillType[T],
+      vl: ValueOf[N]
+  ): Skill = Skill(Operation.SkillOp(pf.inst(st.inst), sk.inst) #:: ops)
+
+}
