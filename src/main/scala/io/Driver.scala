@@ -26,7 +26,7 @@ object Driver:
     private def adbWait: F[Unit] =
       for
         rnd <- Random.scalaUtilRandom[F]
-        time <- rnd.betweenInt(400, 600)
+        time <- rnd.betweenInt(300, 600)
         _ <- sleep(time.millis)
       yield ()
 

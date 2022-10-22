@@ -1,5 +1,5 @@
 import internal.cards.{Pool, Card, Inst, ValidCard}
-import internal.turns.Turn.WithCard
+import internal.turns.Turn.Start
 import internal.skills.{Performer, Skill}
 import internal.skills.Valid._
 import internal.util.Helper._
@@ -26,11 +26,13 @@ package object internal:
   type Target[A] = internal.skills.SkillType.Target[A]
   type OrderChange[A, B] = internal.skills.SkillType.OrderChange[A, B]
 
-  def turn[F[_]: Sync]: WithCard[F] = WithCard(Stream.empty)
+  def turn[F[_]: Sync]: Start[F] = Start(Stream.empty)
 
   def card: Pool[TNil] = Pool.empty
 
   def skill: Skill = Skill(LazyList.empty)
+
+  /* typeclass instances */
 
   given vc1: ValidCard[ATK, 1] with {}
   given vc2: ValidCard[ATK, 2] with {}

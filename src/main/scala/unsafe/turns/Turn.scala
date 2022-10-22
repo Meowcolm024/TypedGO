@@ -11,11 +11,11 @@ import internal.turns.Turn._
 object Turn:
 
   extension [F[_]: Sync](turn: WithSkill[F])
-    def unsafeSelectCards(cards: Unsafe ?=> Stream[F, Operation]): WithCard[F] =
+    def unsafeSelectCards(cards: Unsafe ?=> Stream[F, Operation]): Done[F] =
       given Unsafe = unsafe.unsafely
-      WithCard(turn.ops ++ cards)
+      Done(turn.ops ++ cards)
 
-  extension [F[_]: Sync](turn: WithCard[F])
+  extension [F[_]: Sync](turn: Start[F])
     def unsafeSelectSkills(
         skills: Unsafe ?=> Stream[F, Operation]
     ): WithSkill[F] =

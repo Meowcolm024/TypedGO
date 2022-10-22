@@ -2,7 +2,7 @@ package io
 
 import io.Operation
 import io.Driver._
-import internal.turns.Turn.WithCard
+import internal.turns.Turn.Done
 import internal.skills.SkillType
 
 import org.typelevel.log4cats.Logger
@@ -13,7 +13,7 @@ import fs2.Stream
 trait Operator[F[_]: Sync](val driver: Driver[F])(using Logger[F]):
   def operate(op: Operation): F[Unit]
 
-  final def start(turns: WithCard[F]): F[Unit] =
+  final def start(turns: Done[F]): F[Unit] =
     turns.build.evalTap(operate).compile.drain
 
 object Operator:
