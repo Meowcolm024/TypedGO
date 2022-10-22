@@ -93,7 +93,7 @@ object Operator:
             selectSkill(ssk.get(s.pos - 1).flatMap(_.get(idx - 1)), ty)
           case Operation.SkillOp(Master(ty), idx) =>
             for
-              pt <- shiftPoint(Some((1780, 470)))
+              pt <- shiftPoint(Some((1780, 470))) // unfold master skills
               _ <- driver.tap.tupled(pt)
               _ <- selectSkill(msk.get(idx), ty)
             yield ()
